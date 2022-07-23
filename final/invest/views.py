@@ -1,6 +1,8 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
+from django.http import HttpResponse
 from django.views import View
 from .models import Company, Stock
+from .forms import AddCompanyForm
 import yfinance as yf, pandas as pd, shutil, os, time, glob
 import numpy as np
 import requests
@@ -63,6 +65,24 @@ class CompanyListView(View):
     def get(self, request):
         companies = Company.objects.all().order_by('name')
         return render(request, 'company_list.html', {'companies': companies})
+
+class AddCompanyView(View):
+    def get(self, request):
+        form = AddCompanyForm()
+        return render(request, "add_company.html", {"form": form})
+
+    def post(self, request):
+        form = AddCompanyForm(request.POST)
+        if form.is_valid():
+            name = form.cleaned_data['name']
+            short_name = form.cleaned_data["short_name"]
+            description = form.cleaned_data["description"]
+            history = form.cleaned_data["history"]
+            new_company = Company.objects.create(name=name, short_name=short_name,
+                                                 description=description, history=history)
+            return redirect(f'/company/{new_company.id}/')
+        else:
+            return HttpResponse('Formularz jest niepoprawny!', {"form": form})
 
 #class RSIView(View):
 #    def get(self, request):
