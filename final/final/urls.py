@@ -15,7 +15,9 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from invest.views import IndexView, CompanyView, CompanyListView, AddCompanyView
+from invest.views import IndexView, CompanyView, CompanyListView, AddCompanyView, IndicatorView, \
+    IndicatorListView, AddIndicatorView, NyseCompaniesView, GpwCompaniesView
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -24,4 +26,9 @@ urlpatterns = [
     path('company/<int:company_id>/', CompanyView.as_view()),
     path('companies/', CompanyListView.as_view()),
     path('add_company/', AddCompanyView.as_view()),
+    path('indicator/<int:indicator_id>/', IndicatorView.as_view()),
+    path('indicators/', IndicatorListView.as_view()),
+    path('add_indicator/', AddIndicatorView.as_view()),
+    path('companies/nyse/', NyseCompaniesView.as_view()),
+    path('companies/gpw/', GpwCompaniesView.as_view()),
 ]
