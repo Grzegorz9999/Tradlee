@@ -1,8 +1,8 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponse
 from django.views import View
-from .models import Company, Stock
-from .forms import AddCompanyForm
+from .models import Company, Stock, Indicator
+from .forms import AddCompanyForm, AddIndicatorForm
 import yfinance as yf, pandas as pd, shutil, os, time, glob
 import numpy as np
 import requests
@@ -83,6 +83,45 @@ class AddCompanyView(View):
             return redirect(f'/company/{new_company.id}/')
         else:
             return HttpResponse('Formularz jest niepoprawny!', {"form": form})
+
+class IndicatorView(View):
+    def get(self, request, indicator_id):
+        indicator = get_object_or_404(Indicator, pk=indicator_id)
+        return render(request, 'indicator.html', {'indicator': indicator})
+
+class IndicatorListView(View):
+    def get(self, request):
+        indicators = Indicator.objects.all().order_by('name')
+        return render(request, 'indicator_list.html', {'indicators': indicators})
+
+class AddIndicatorView(View):
+    def get(self, request):
+        form = AddIndicatorForm()
+        return render(request, "add_indicator.html", {"form": form})
+
+    def post(self, request):
+        form = AddIndicatorForm(request.POST)
+        if form.is_valid():
+            name = form.cleaned_data['name']
+            short_name = form.cleaned_data["short_name"]
+            definition = form.cleaned_data["definition"]
+            new_indicator = Indicator.objects.create(name=name, short_name=short_name,
+                                                 definition=definition)
+            return redirect(f'/indicator/{new_indicator.id}/')
+        else:
+            return HttpResponse('Formularz jest niepoprawny!', {"form": form})
+
+class NyseCompaniesView(View):
+    def get(self, request):
+        stock = Stock.objects.get(pk=1)
+        companies = Company.objects.filter(stock_names=stock)
+        return render(request, 'nyse_companies.html', {'companies': companies})
+
+class GpwCompaniesView(View):
+    def get(self, request):
+        stock = Stock.objects.get(pk=2)
+        companies = Company.objects.filter(stock_names=stock)
+        return render(request, 'gpw_companies.html', {'companies': companies})
 
 #class RSIView(View):
 #    def get(self, request):

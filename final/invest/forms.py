@@ -8,3 +8,7 @@ class AddCompanyForm(forms.Form):
     description = forms.CharField(label='Opis spółki', max_length=1000)
     history = forms.CharField(label='Historia spółki', max_length=1000)
 
+class AddIndicatorForm(forms.Form):
+    name = forms.CharField(label='Wpisz nazwę', max_length=64)
+    short_name = forms.CharField(label='Wpisz skrót', max_length=10)
+    definition = forms.CharField(label='Opisz wskaźnik', max_length=1000)

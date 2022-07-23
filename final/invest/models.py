@@ -23,6 +23,14 @@ class Company(models.Model):
         return self.name
 
 
+class Indicator(models.Model):
+    id = models.AutoField(primary_key=True)
+    name = models.CharField(max_length=256)
+    short_name = models.CharField(max_length=10, null=True)
+    definition = models.CharField(max_length=1000)
+
+    def __str__(self):
+        return self.name
 
 #class indicator(models.Model):
  #   name = ForeignKey(Company, on_delete=models.CASCADE)
