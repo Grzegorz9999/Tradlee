@@ -15,9 +15,12 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from invest.views import IndexView
+from invest.views import IndexView, CompanyView, CompanyListView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', IndexView.as_view()),
+    #path('RSI/', RSIView.as_view()),
+    path('company/<int:company_id>/', CompanyView.as_view()),
+    path('companies/', CompanyListView.as_view()),
 ]
