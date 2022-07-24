@@ -1,8 +1,9 @@
-from django.shortcuts import render, get_object_or_404, redirect
-from django.http import HttpResponse
+from django.shortcuts import render, get_object_or_404, redirect, reverse
+from django.http import HttpResponse, HttpResponseRedirect
 from django.views import View
 from .models import Company, Stock, Indicator
-from .forms import AddCompanyForm, AddIndicatorForm
+from .forms import AddCompanyForm, AddIndicatorForm, MyLoginForm
+from django.contrib.auth import authenticate, logout
 import yfinance as yf, pandas as pd, shutil, os, time, glob
 import numpy as np
 import requests
@@ -123,20 +124,104 @@ class GpwCompaniesView(View):
         companies = Company.objects.filter(stock_names=stock)
         return render(request, 'gpw_companies.html', {'companies': companies})
 
+class MyLoginFinal(View):
+
+    def get(self, request):
+        form = MyLoginForm()
+        return render(request, 'login.html', {"form": form})
+
+    def post(self, request):
+        form = MyLoginForm(request.POST)
+        if form.is_valid():
+            login = form.cleaned_data['login']
+            password = form.cleaned_data['password']
+            user = authenticate(username=login, password=password)
+            if user is not None:
+                return render(request, 'login_succes.html', {"form": form})
+            else:
+                return HttpResponse("Zły użytkownik lub hasło")
+
+
+class MyLogoutView(View):
+    def get(self, request):
+        logout(request)
+        return HttpResponseRedirect(reverse('my_login'))
+
+class RSIView(View):
+    def get(self, request, company_id):
+        company = get_object_or_404(Company, pk=company_id)
+        ticker = pdr.get_data_yahoo(company.short_name, datetime(2022, 1, 1))
+        delta = ticker['Close'].diff()
+        up = delta.clip(lower=0)
+        down = -1 * delta.clip(upper=0)
+        ema_up = up.ewm(com=13, adjust=False).mean()
+        ema_down = down.ewm(com=13, adjust=False).mean()
+        rs = ema_up / ema_down
+        ticker['RSI'] = 100 - (100 / (1 + rs))
+        ticker = ticker.iloc[14:]
+        ticker = ticker.iloc[-1:]
+        result = ticker['RSI']
+        return render(request, "RSI.html", context={
+                       'RSIView': RSIView,
+                       'ticker': ticker,
+                        'result': result,
+                        'company': company,
+                  })
+
 #class RSIView(View):
-#    def get(self, request):
+ #   def get(self, request, ):
   #      ticker = pdr.get_data_yahoo("TSLA", datetime(2022, 1, 1))
    #     delta = ticker['Close'].diff()
-  #      up = delta.clip(lower=0)
-  #      down = -1 * delta.clip(upper=0)
-  #      ema_up = up.ewm(com=13, adjust=False).mean()
+    #    up = delta.clip(lower=0)
+     #   down = -1 * delta.clip(upper=0)
+      #  ema_up = up.ewm(com=13, adjust=False).mean()
   #      ema_down = down.ewm(com=13, adjust=False).mean()
-  #      rs = ema_up / ema_down
-  #      ticker['RSI'] = 100 - (100 / (1 + rs))
-  ## #     # ticker = ticker.iloc[14:]
-   #     ticker = ticker.iloc[-1:]
-   #     print(ticker['RSI'])
-  #      return render(request, "RSI.html", context={
-   #                   'RSIView': RSIView,
-   #                     'ticker': ticker,
-    #              })
+   #     rs = ema_up / ema_down
+    #    ticker['RSI'] = 100 - (100 / (1 + rs))
+     #   ticker = ticker.iloc[14:]
+      #  ticker = ticker.iloc[-1:]
+       # result = ticker['RSI']
+        #return render(request, "RSI.html", context={
+         #              'RSIView': RSIView,
+          #             'ticker': ticker,
+           #             'result': result,
+            #      })
+
+
+class RSIView1(View):
+    def get(self, request):
+        ticker = pdr.get_data_yahoo("TWTR", datetime(2022, 1, 1))
+        delta = ticker['Close'].diff()
+        up = delta.clip(lower=0)
+        down = -1 * delta.clip(upper=0)
+        ema_up = up.ewm(com=13, adjust=False).mean()
+        ema_down = down.ewm(com=13, adjust=False).mean()
+        rs = ema_up / ema_down
+        ticker['RSI'] = 100 - (100 / (1 + rs))
+        ticker = ticker.iloc[14:]
+        ticker = ticker.iloc[-1:]
+        result = ticker['RSI']
+        return render(request, "RSI1.html", context={
+                       'RSIView': RSIView,
+                       'ticker': ticker,
+                        'result': result,
+                  })
+
+class RSIView2(View):
+    def get(self, request):
+        ticker = pdr.get_data_yahoo("AAPL", datetime(2022, 1, 1))
+        delta = ticker['Close'].diff()
+        up = delta.clip(lower=0)
+        down = -1 * delta.clip(upper=0)
+        ema_up = up.ewm(com=13, adjust=False).mean()
+        ema_down = down.ewm(com=13, adjust=False).mean()
+        rs = ema_up / ema_down
+        ticker['RSI'] = 100 - (100 / (1 + rs))
+        ticker = ticker.iloc[14:]
+        ticker = ticker.iloc[-1:]
+        result = ticker['RSI']
+        return render(request, "RSI1.html", context={
+                       'RSIView': RSIView,
+                       'ticker': ticker,
+                        'result': result,
+                  })

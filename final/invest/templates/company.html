@@ -124,6 +124,11 @@
                       {% endif %}
               <p>Opis: {{ company.description }}</p>
               <p>Historia: {{ company.history }}</p>
+            {% if user.is_anonymous %}
+            Sprawdź RSI <a href="{% url 'my_login' %}">zaloguj</a>
+            {% else %}
+            Sprawdź RSI <a href="/RSI/{{ company.id }}">tutaj</a>
+            {% endif %}
         </p>
       </div>
     </section>

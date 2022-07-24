@@ -32,6 +32,7 @@ class Indicator(models.Model):
     def __str__(self):
         return self.name
 
+
 #class indicator(models.Model):
  #   name = ForeignKey(Company, on_delete=models.CASCADE)
 
