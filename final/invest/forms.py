@@ -12,3 +12,7 @@ class AddIndicatorForm(forms.Form):
     name = forms.CharField(label='Wpisz nazwę', max_length=64)
     short_name = forms.CharField(label='Wpisz skrót', max_length=10)
     definition = forms.CharField(label='Opisz wskaźnik', max_length=1000)
+
+class MyLoginForm(forms.Form):
+    login = forms.CharField(max_length=20)
+    password = forms.CharField(max_length=20, widget=forms.PasswordInput)
