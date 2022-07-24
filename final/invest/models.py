@@ -15,7 +15,7 @@ class Company(models.Model):
     id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=256)
     short_name = models.CharField(max_length=10)
-    stock_names = models.ManyToManyField(Stock)
+    stock = models.ForeignKey(Stock, on_delete=models.SET_NULL, null=True)
     description = models.TextField(null=True)
     history = models.TextField(null=True)
 
@@ -32,13 +32,12 @@ class Indicator(models.Model):
     def __str__(self):
         return self.name
 
+class Strategy(models.Model):
+    id = models.AutoField(primary_key=True)
+    name = models.CharField(max_length=256)
+    indicator = models.ManyToManyField(Indicator)
+    description = models.CharField(max_length=5000)
 
-#class indicator(models.Model):
- #   name = ForeignKey(Company, on_delete=models.CASCADE)
+    def __str__(self):
+        return self.name
 
-
-
-#class Company_rsi(models.Model):
- #   id = models.AutoField(primary_key=True)
-  #  name_company = models.ForeignKey(Company, on_delete=models.CASCADE)
-   # rsi =

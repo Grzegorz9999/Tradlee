@@ -17,15 +17,13 @@ from django.contrib import admin
 from django.urls import path, include
 from invest.views import IndexView, CompanyView, CompanyListView, AddCompanyView, IndicatorView, \
     IndicatorListView, AddIndicatorView, NyseCompaniesView, GpwCompaniesView, MyLoginFinal, MyLogoutView, \
-    RSIView, RSIView1, RSIView2
+    RSIView, StrategyListView, StrategyView
 
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', IndexView.as_view()),
     path('RSI/<int:company_id>/', RSIView.as_view()),
-    path('RSI1/', RSIView1.as_view()),
-    path('RSI2/', RSIView2.as_view()),
     path('company/<int:company_id>/', CompanyView.as_view()),
     path('companies/', CompanyListView.as_view()),
     path('add_company/', AddCompanyView.as_view()),
@@ -36,4 +34,6 @@ urlpatterns = [
     path('companies/gpw/', GpwCompaniesView.as_view()),
     path('login/', MyLoginFinal.as_view(), name='my_login'),
     path('my_logout/', MyLogoutView.as_view(), name='my_logout'),
+    path('strategies/', StrategyListView.as_view()),
+    path('strategy/<int:strategy_id>/', StrategyView.as_view()),
 ]
