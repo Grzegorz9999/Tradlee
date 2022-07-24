@@ -17,7 +17,7 @@ from django.contrib import admin
 from django.urls import path, include
 from invest.views import IndexView, CompanyView, CompanyListView, AddCompanyView, IndicatorView, \
     IndicatorListView, AddIndicatorView, NyseCompaniesView, GpwCompaniesView, MyLoginFinal, MyLogoutView, \
-    RSIView, StrategyListView, StrategyView
+    RSIView, StrategyListView, StrategyView, AddEmailView
 
 
 urlpatterns = [
@@ -36,4 +36,5 @@ urlpatterns = [
     path('my_logout/', MyLogoutView.as_view(), name='my_logout'),
     path('strategies/', StrategyListView.as_view()),
     path('strategy/<int:strategy_id>/', StrategyView.as_view()),
+    path('subscription/', AddEmailView.as_view()),
 ]

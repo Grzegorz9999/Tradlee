@@ -16,3 +16,6 @@ class AddIndicatorForm(forms.Form):
 class MyLoginForm(forms.Form):
     login = forms.CharField(max_length=20)
     password = forms.CharField(max_length=20, widget=forms.PasswordInput)
+
+class SubscriptionForm(forms.Form):
+    email = forms.EmailField(label='', max_length=254)

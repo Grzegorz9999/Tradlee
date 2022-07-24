@@ -1,8 +1,8 @@
 from django.shortcuts import render, get_object_or_404, redirect, reverse
 from django.http import HttpResponse, HttpResponseRedirect
 from django.views import View
-from .models import Company, Stock, Indicator, Strategy
-from .forms import AddCompanyForm, AddIndicatorForm, MyLoginForm
+from .models import Company, Stock, Indicator, Strategy, Subscription
+from .forms import AddCompanyForm, AddIndicatorForm, MyLoginForm, SubscriptionForm
 from django.contrib.auth import authenticate, logout
 import yfinance as yf, pandas as pd, shutil, os, time, glob
 import numpy as np
@@ -14,12 +14,24 @@ from datetime import datetime
 
 # Create your views here.
 
+# class IndexView(View):
+#
+#     def get(self, request):
+#         return render(request, "index.html", )
+
 class IndexView(View):
-
     def get(self, request):
-        return render(request, "index.html", )
+        form = SubscriptionForm()
+        return render(request, "index.html", {"form": form})
 
-
+    def post(self, request):
+        form = SubscriptionForm(request.POST)
+        if form.is_valid():
+            email = form.cleaned_data['email']
+            Subscription.objects.create(email=email)
+            return redirect(f'/subscription/')
+        else:
+            return HttpResponse('Formularz jest niepoprawny!', {"form": form})
 
 
 # # from datetime import date
@@ -177,4 +189,8 @@ class StrategyListView(View):
     def get(self, request):
         strategies = Strategy.objects.all().order_by('name')
         return render(request, 'strategy_list.html', {'strategies': strategies})
+
+class AddEmailView(View):
+    def get(self, request):
+        return render(request, 'subscription.html')
 
