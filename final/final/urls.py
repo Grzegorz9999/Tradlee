@@ -17,23 +17,24 @@ from django.contrib import admin
 from django.urls import path, include
 from invest.views import IndexView, CompanyView, CompanyListView, AddCompanyView, IndicatorView, \
     IndicatorListView, AddIndicatorView, NyseCompaniesView, GpwCompaniesView, MyLoginFinal, MyLogoutView, \
-    RSIView, StrategyListView, StrategyView
+    RSIView, StrategyListView, StrategyView, AddEmailView
 
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', IndexView.as_view()),
-    path('RSI/<int:company_id>/', RSIView.as_view()),
-    path('company/<int:company_id>/', CompanyView.as_view()),
-    path('companies/', CompanyListView.as_view()),
-    path('add_company/', AddCompanyView.as_view()),
-    path('indicator/<int:indicator_id>/', IndicatorView.as_view()),
-    path('indicators/', IndicatorListView.as_view()),
-    path('add_indicator/', AddIndicatorView.as_view()),
-    path('companies/nyse/', NyseCompaniesView.as_view()),
-    path('companies/gpw/', GpwCompaniesView.as_view()),
+    path('', IndexView.as_view(), name='index'),
+    path('RSI/<int:company_id>/', RSIView.as_view(), name='rsi'),
+    path('company/<int:company_id>/', CompanyView.as_view(), name='company'),
+    path('companies/', CompanyListView.as_view(), name='companies'),
+    path('add_company/', AddCompanyView.as_view(), name='add_company'),
+    path('indicator/<int:indicator_id>/', IndicatorView.as_view(), name='indicator'),
+    path('indicators/', IndicatorListView.as_view(), name='indicators'),
+    path('add_indicator/', AddIndicatorView.as_view(), name='add_indicator'),
+    path('companies/nyse/', NyseCompaniesView.as_view(), name='companies_nyse'),
+    path('companies/gpw/', GpwCompaniesView.as_view(), name='companies_gpw'),
     path('login/', MyLoginFinal.as_view(), name='my_login'),
     path('my_logout/', MyLogoutView.as_view(), name='my_logout'),
-    path('strategies/', StrategyListView.as_view()),
-    path('strategy/<int:strategy_id>/', StrategyView.as_view()),
+    path('strategies/', StrategyListView.as_view(), name='strategies'),
+    path('strategy/<int:strategy_id>/', StrategyView.as_view(), name='strategy'),
+    path('subscription/', AddEmailView.as_view(), name='subscription'),
 ]

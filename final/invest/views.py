@@ -1,8 +1,8 @@
 from django.shortcuts import render, get_object_or_404, redirect, reverse
 from django.http import HttpResponse, HttpResponseRedirect
 from django.views import View
-from .models import Company, Stock, Indicator, Strategy
-from .forms import AddCompanyForm, AddIndicatorForm, MyLoginForm
+from .models import Company, Stock, Indicator, Strategy, Subscription
+from .forms import AddCompanyForm, AddIndicatorForm, MyLoginForm, SubscriptionForm
 from django.contrib.auth import authenticate, logout
 import yfinance as yf, pandas as pd, shutil, os, time, glob
 import numpy as np
@@ -14,12 +14,37 @@ from datetime import datetime
 
 # Create your views here.
 
+# class IndexView(View):
+#
+#     def get(self, request):
+#         return render(request, "index.html", )
+
 class IndexView(View):
-
     def get(self, request):
-        return render(request, "index.html", )
+        form = SubscriptionForm()
+        company = get_object_or_404(Company, pk=1)
+        company1 = get_object_or_404(Company, pk=2)
+        company2 = get_object_or_404(Company, pk=3)
+        company3 = get_object_or_404(Company, pk=4)
+        company4 = get_object_or_404(Company, pk=5)
+        company5 = get_object_or_404(Company, pk=6)
+        return render(request, "index.html", {"form": form,
+                                              "company": company,
+                                              "company1": company1,
+                                              "company2": company2,
+                                              "company3": company3,
+                                              "company4": company4,
+                                              "company5": company5,
+                                              })
 
-
+    def post(self, request):
+        form = SubscriptionForm(request.POST)
+        if form.is_valid():
+            email = form.cleaned_data['email']
+            Subscription.objects.create(email=email)
+            return redirect(f'/subscription/')
+        else:
+            return HttpResponse('Formularz jest niepoprawny!', {"form": form})
 
 
 # # from datetime import date
@@ -59,8 +84,8 @@ class IndexView(View):
 class CompanyView(View):
     def get(self, request, company_id):
         company = get_object_or_404(Company, pk=company_id)
-        stock_names = company.stock.all()
-        return render(request, 'company.html', {'company': company, 'stock_names': stock_names})
+        stock = company.stock
+        return render(request, 'company.html', {'company': company, 'stock': stock})
 
 class CompanyListView(View):
     def get(self, request):
@@ -115,13 +140,13 @@ class AddIndicatorView(View):
 class NyseCompaniesView(View):
     def get(self, request):
         stock = Stock.objects.get(pk=1)
-        companies = Company.objects.filter(stock_names=stock)
+        companies = Company.objects.filter(stock=stock)
         return render(request, 'nyse_companies.html', {'companies': companies})
 
 class GpwCompaniesView(View):
     def get(self, request):
         stock = Stock.objects.get(pk=2)
-        companies = Company.objects.filter(stock_names=stock)
+        companies = Company.objects.filter(stock=stock)
         return render(request, 'gpw_companies.html', {'companies': companies})
 
 class MyLoginFinal(View):
@@ -160,12 +185,17 @@ class RSIView(View):
         ticker['RSI'] = 100 - (100 / (1 + rs))
         ticker = ticker.iloc[14:]
         ticker = ticker.iloc[-1:]
-        result = ticker['RSI']
+        result = str(ticker['RSI'])
+        result1 = []
+        for i in result:
+            result1 += i.split(" ")
+            result2 = "".join(result1[23:31])
         return render(request, "RSI.html", context={
                        'RSIView': RSIView,
                        'ticker': ticker,
                         'result': result,
                         'company': company,
+                        'result2': result2,
                   })
 
 class StrategyView(View):
@@ -177,4 +207,8 @@ class StrategyListView(View):
     def get(self, request):
         strategies = Strategy.objects.all().order_by('name')
         return render(request, 'strategy_list.html', {'strategies': strategies})
+
+class AddEmailView(View):
+    def get(self, request):
+        return render(request, 'subscription.html')
 
