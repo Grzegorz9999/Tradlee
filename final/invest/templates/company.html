@@ -116,12 +116,7 @@
         <p>
               <p>Nazwa: {{ company.name }}</p>
               <p>Ticker: {{ company.short_name }}</p>
-              <p>Giełda:
-                      {% if stock_names %}
-                          {% for stock in stock_names %}
-                              {{ stock.stock_name }}
-                          {% endfor %}
-                      {% endif %}
+              <p>Giełda: {{ stock.stock_name }}
               <p>Opis: {{ company.description }}</p>
               <p>Historia: {{ company.history }}</p>
             {% if user.is_anonymous %}
