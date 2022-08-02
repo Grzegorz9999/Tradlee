@@ -102,9 +102,11 @@ class AddCompanyView(View):
         if form.is_valid():
             name = form.cleaned_data['name']
             short_name = form.cleaned_data["short_name"]
+            stock = form.cleaned_data["stock"]
             description = form.cleaned_data["description"]
             history = form.cleaned_data["history"]
             new_company = Company.objects.create(name=name, short_name=short_name,
+                                                 stock=Stock.objects.get(stock_name=stock),
                                                  description=description, history=history)
             return redirect(f'/company/{new_company.id}/')
         else:

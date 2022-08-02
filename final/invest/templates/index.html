@@ -64,15 +64,15 @@
 
       <nav id="navbar" class="navbar">
         <ul>
-          <li><a class="nav-link scrollto active" href="#hero">Home</a></li>
-          <li><a class="nav-link scrollto" href="#about">About</a></li>
-          <li><a class="nav-link scrollto" href="#services">Companies</a></li>
-          <li><a class="nav-link scrollto " href="#portfolio">Indicators</a></li>
-          <li><a class="nav-link scrollto" href="#portfolio">Strategies</a></li>
+          <li><a class="nav-link scrollto active" href="/#hero">Home</a></li>
+          <li><a class="nav-link scrollto" href="/#about">About</a></li>
+          <li><a class="nav-link scrollto" href="/#services">Companies</a></li>
+          <li><a class="nav-link scrollto " href="/#portfolio">Indicators</a></li>
+          <li><a class="nav-link scrollto" href="/#portfolio">Strategies</a></li>
           <li class="dropdown"><a href="#"><span>Stock</span> <i class="bi bi-chevron-down"></i></a>
             <ul>
-              <li><a href="companies/gpw/">GPW</a></li>
-              <li class="dropdown"><a href="companies/nyse/"><span>NYSE</span> <i class="bi bi-chevron-right"></i></a>
+              <li><a href="/companies/gpw/">GPW</a></li>
+              <li class="dropdown"><a href="/companies/nyse/"><span>NYSE</span> <i class="bi bi-chevron-right"></i></a>
                 <ul>
                   <li><a href="/company/1">{{ company.name }}</a></li>
                   <li><a href="/company/2">{{ company1.name }}</a></li>
@@ -83,13 +83,14 @@
               </li>
             </ul>
           </li>
-          <li><a class="nav-link scrollto" href="login/">Zaloguj</a></li>
+          <li><a class="nav-link scrollto" href="/login/">Log in</a></li>
         </ul>
         <i class="bi bi-list mobile-nav-toggle"></i>
       </nav><!-- .navbar -->
 
     </div>
   </header><!-- End Header -->
+{% block content %}
 
   <!-- ======= Hero Section ======= -->
   <section id="hero" class="d-flex align-items-center">
@@ -360,7 +361,7 @@
           <div class="col-lg-4 col-md-6 d-flex align-items-stretch mt-4 mt-md-0" data-aos="zoom-in" data-aos-delay="200">
             <div class="icon-box">
               <div class="icon"><i class="bx bx-file"></i></div>
-              <h4><a href="">{{ company1.name }}</a></h4>
+              <h4><a href="/company/2">{{ company1.name }}</a></h4>
               <p>{{ company1.description }}</p>
             </div>
           </div>
@@ -368,7 +369,7 @@
           <div class="col-lg-4 col-md-6 d-flex align-items-stretch mt-4 mt-lg-0" data-aos="zoom-in" data-aos-delay="300">
             <div class="icon-box">
               <div class="icon"><i class="bx bx-tachometer"></i></div>
-              <h4><a href="">{{ company2.name }}</a></h4>
+              <h4><a href="/company/3">{{ company2.name }}</a></h4>
               <p>{{ company2.description }}</p>
             </div>
           </div>
@@ -376,7 +377,7 @@
           <div class="col-lg-4 col-md-6 d-flex align-items-stretch mt-4" data-aos="zoom-in" data-aos-delay="100">
             <div class="icon-box">
               <div class="icon"><i class="bx bx-world"></i></div>
-              <h4><a href="">{{ company3.name }}</a></h4>
+              <h4><a href="/company/4">{{ company3.name }}</a></h4>
               <p>{{ company3.description }}</p>
             </div>
           </div>
@@ -384,7 +385,7 @@
           <div class="col-lg-4 col-md-6 d-flex align-items-stretch mt-4" data-aos="zoom-in" data-aos-delay="200">
             <div class="icon-box">
               <div class="icon"><i class="bx bx-slideshow"></i></div>
-              <h4><a href="">{{ company4.name }}</a></h4>
+              <h4><a href="/company/5">{{ company4.name }}</a></h4>
               <p>{{ company4.description }}</p>
             </div>
           </div>
@@ -392,7 +393,7 @@
           <div class="col-lg-4 col-md-6 d-flex align-items-stretch mt-4" data-aos="zoom-in" data-aos-delay="300">
             <div class="icon-box">
               <div class="icon"><i class="bx bx-arch"></i></div>
-              <h4><a href="">{{ company5.name }}</a></h4>
+              <h4><a href="/company/6">{{ company5.name }}</a></h4>
               <p>{{ company5.description }}</p>
             </div>
           </div>
@@ -941,6 +942,7 @@
       </div>
     </div>
 
+{% endblock %}
     <!--<div class="footer-top">
       <div class="container">
         <div class="row">
@@ -993,7 +995,6 @@
         </div>
       </div>
     </div> -->
-
     <div class="container py-4">
       <div class="copyright">
         &copy; Copyright <strong><span>BizLand</span></strong>. All Rights Reserved

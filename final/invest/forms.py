@@ -3,15 +3,16 @@ from django.forms import ModelForm
 
 
 class AddCompanyForm(forms.Form):
-    name = forms.CharField(label='Wpisz nazwę', max_length=64)
-    short_name = forms.CharField(label='Wpisz TICKER', max_length=10)
-    description = forms.CharField(label='Opis spółki', max_length=1000)
-    history = forms.CharField(label='Historia spółki', max_length=1000)
+    name = forms.CharField(label='Name', max_length=64)
+    short_name = forms.CharField(label='TICKER', max_length=10)
+    stock = forms.CharField(label='Stock', max_length=100)
+    description = forms.CharField(widget=forms.Textarea)
+    history = forms.CharField(widget=forms.Textarea)
 
 class AddIndicatorForm(forms.Form):
-    name = forms.CharField(label='Wpisz nazwę', max_length=64)
-    short_name = forms.CharField(label='Wpisz skrót', max_length=10)
-    definition = forms.CharField(label='Opisz wskaźnik', max_length=1000)
+    name = forms.CharField(label='Name', max_length=64)
+    short_name = forms.CharField(label='Short name', max_length=10)
+    definition = forms.CharField(widget=forms.Textarea)
 
 class MyLoginForm(forms.Form):
     login = forms.CharField(max_length=20)
