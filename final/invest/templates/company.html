@@ -21,11 +21,11 @@
     <section class="inner-page">
       <div class="container">
         <p>
-              <p>Nazwa: {{ company.name }}</p>
-              <p>Ticker: {{ company.short_name }}</p>
-              <p>Giełda: {{ stock.stock_name }}
-              <p>Opis: {{ company.description }}</p>
-              <p>Historia: {{ company.history }}</p>
+              <p><b>Name:</b> {{ company.name }}</p>
+              <p><b>Ticker:</b> {{ company.short_name }}</p>
+              <p><b>Stock:</b> {{ stock.stock_name }}
+              <p><b>Description:</b> {{ company.description }}</p>
+              <p><b>History:</b> {{ company.history }}</p>
             {% if user.is_anonymous %}
             Check RSI <a href="{% url 'my_login' %}">Log in</a>
             {% else %}
