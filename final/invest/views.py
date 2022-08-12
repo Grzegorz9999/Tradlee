@@ -2,22 +2,14 @@ from django.shortcuts import render, get_object_or_404, redirect, reverse
 from django.http import HttpResponse, HttpResponseRedirect
 from django.views import View
 from .models import Company, Stock, Indicator, Strategy, Subscription
-from .forms import AddCompanyForm, AddIndicatorForm, MyLoginForm, SubscriptionForm
+from .forms import AddCompanyForm, AddIndicatorForm, MyLoginForm, SubscriptionForm, CreateUserForm
 from django.contrib.auth import authenticate, logout
-import yfinance as yf, pandas as pd, shutil, os, time, glob
-import numpy as np
-import requests
-from get_all_tickers import get_tickers as gt
-from statistics import mean
+from django.contrib import messages
 import pandas_datareader as pdr
 from datetime import datetime
 
 # Create your views here.
 
-# class IndexView(View):
-#
-#     def get(self, request):
-#         return render(request, "index.html", )
 
 class IndexView(View):
     def get(self, request):
@@ -47,50 +39,18 @@ class IndexView(View):
             return HttpResponse('Formularz jest niepoprawny!', {"form": form})
 
 
-# # from datetime import date
-#
-# # today = date.today()
-# ticker = pdr.get_data_yahoo("TWTR", datetime(2022, 5, 1))
-# delta = ticker['Close'].diff()
-# up = delta.clip(lower=0)
-# down = -1 * delta.clip(upper=0)
-# ema_up = up.ewm(com=13, adjust=False).mean()
-# ema_down = down.ewm(com=13, adjust=False).mean()
-# rs = ema_up / ema_down
-# ticker['RSI'] = 100 - (100 / (1 + rs))
-# # Skip first 14 days to have real values
-# ticker = ticker.iloc[14:]
-# ticker1 = ticker.iloc[-1:]
-# print(ticker)
-# print(ticker1)
-#
-# def get_rsi(self, request):
-#     ticker = pdr.get_data_yahoo("TSLA", datetime(2022, 1, 1))
-#     delta = ticker['Close'].diff()
-#     up = delta.clip(lower=0)
-#     down = -1 * delta.clip(upper=0)
-#     ema_up = up.ewm(com=13, adjust=False).mean()
-#     ema_down = down.ewm(com=13, adjust=False).mean()
-#     rs = ema_up / ema_down
-#     ticker['RSI'] = 100 - (100 / (1 + rs))
-#     # Skip first 14 days to have real values
-#     # ticker = ticker.iloc[14:]
-#     ticker = ticker.iloc[-1:]
-#     print(ticker['RSI'])
-#     return render(request, "RSI.html", context={
-#         'ticker': ticker,
-#     })
-
 class CompanyView(View):
     def get(self, request, company_id):
         company = get_object_or_404(Company, pk=company_id)
         stock = company.stock
         return render(request, 'company.html', {'company': company, 'stock': stock})
 
+
 class CompanyListView(View):
     def get(self, request):
         companies = Company.objects.all().order_by('name')
         return render(request, 'company_list.html', {'companies': companies})
+
 
 class AddCompanyView(View):
     def get(self, request):
@@ -112,15 +72,18 @@ class AddCompanyView(View):
         else:
             return HttpResponse('Formularz jest niepoprawny!', {"form": form})
 
+
 class IndicatorView(View):
     def get(self, request, indicator_id):
         indicator = get_object_or_404(Indicator, pk=indicator_id)
         return render(request, 'indicator.html', {'indicator': indicator})
 
+
 class IndicatorListView(View):
     def get(self, request):
         indicators = Indicator.objects.all().order_by('name')
         return render(request, 'indicator_list.html', {'indicators': indicators})
+
 
 class AddIndicatorView(View):
     def get(self, request):
@@ -134,10 +97,11 @@ class AddIndicatorView(View):
             short_name = form.cleaned_data["short_name"]
             definition = form.cleaned_data["definition"]
             new_indicator = Indicator.objects.create(name=name, short_name=short_name,
-                                                 definition=definition)
+                                                    definition=definition)
             return redirect(f'/indicator/{new_indicator.id}/')
         else:
             return HttpResponse('Formularz jest niepoprawny!', {"form": form})
+
 
 class NyseCompaniesView(View):
     def get(self, request):
@@ -145,11 +109,13 @@ class NyseCompaniesView(View):
         companies = Company.objects.filter(stock=stock)
         return render(request, 'nyse_companies.html', {'companies': companies})
 
+
 class GpwCompaniesView(View):
     def get(self, request):
         stock = Stock.objects.get(pk=2)
         companies = Company.objects.filter(stock=stock)
         return render(request, 'gpw_companies.html', {'companies': companies})
+
 
 class MyLoginFinal(View):
 
@@ -173,6 +139,7 @@ class MyLogoutView(View):
     def get(self, request):
         logout(request)
         return HttpResponseRedirect(reverse('my_login'))
+
 
 class RSIView(View):
     def get(self, request, company_id):
@@ -200,17 +167,34 @@ class RSIView(View):
                         'result2': result2,
                   })
 
+
 class StrategyView(View):
     def get(self, request, strategy_id):
         strategy = get_object_or_404(Strategy, pk=strategy_id)
         return render(request, 'strategy.html', {'strategy': strategy})
+
 
 class StrategyListView(View):
     def get(self, request):
         strategies = Strategy.objects.all().order_by('name')
         return render(request, 'strategy_list.html', {'strategies': strategies})
 
+
 class AddEmailView(View):
     def get(self, request):
         return render(request, 'subscription.html')
 
+
+def registerPage(request):
+    form = CreateUserForm()
+
+    if request.method == 'POST':
+        form = CreateUserForm(request.POST)
+        if form.is_valid():
+            form.save()
+            user = form.cleaned_data.get('username')
+            messages.success(request, 'Account was created for ' + user)
+            return redirect('my_login')
+
+    context = {'form': form}
+    return render(request, 'register.html', context)

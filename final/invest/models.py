@@ -1,5 +1,4 @@
 from django.db import models
-from django.contrib.auth.models import User
 
 
 # Create your models here.
@@ -10,6 +9,7 @@ class Stock(models.Model):
 
     def __str__(self):
         return self.stock_name
+
 
 class Company(models.Model):
     id = models.AutoField(primary_key=True)
@@ -32,6 +32,7 @@ class Indicator(models.Model):
     def __str__(self):
         return self.name
 
+
 class Strategy(models.Model):
     id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=256)
@@ -40,6 +41,7 @@ class Strategy(models.Model):
 
     def __str__(self):
         return self.name
+
 
 class Subscription(models.Model):
     id = models.AutoField(primary_key=True)

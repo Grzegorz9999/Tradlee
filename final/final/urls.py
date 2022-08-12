@@ -14,10 +14,10 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path, include
+from django.urls import path
 from invest.views import IndexView, CompanyView, CompanyListView, AddCompanyView, IndicatorView, \
     IndicatorListView, AddIndicatorView, NyseCompaniesView, GpwCompaniesView, MyLoginFinal, MyLogoutView, \
-    RSIView, StrategyListView, StrategyView, AddEmailView
+    RSIView, StrategyListView, StrategyView, AddEmailView, registerPage
 
 
 urlpatterns = [
@@ -37,4 +37,5 @@ urlpatterns = [
     path('strategies/', StrategyListView.as_view(), name='strategies'),
     path('strategy/<int:strategy_id>/', StrategyView.as_view(), name='strategy'),
     path('subscription/', AddEmailView.as_view(), name='subscription'),
+    path('registration/', registerPage, name='registration'),
 ]
