@@ -8,10 +8,10 @@
       <div class="container">
 
         <div class="d-flex justify-content-between align-items-center">
-          <h2>{{ company.name }}</h2>
+          <h2>Registration</h2>
           <ol>
             <li><a href="/">Home</a></li>
-            <li>Zaloguj</li>
+            <li>Register</li>
           </ol>
         </div>
 
@@ -21,9 +21,25 @@
     <section class="inner-page">
       <div class="container">
         <p>
-              <p>Użytkownik {{ user.username}} jest zalogowany!!!</p>
+          <form action="" method="post">
+            {% csrf_token %}
+            {{ form.username.label }}
+            {{ form.username }}
+
+            {{ form.email.label }}
+            {{ form.email }}
+
+            {{ form.password1.label }}
+            {{ form.password1 }}
+
+            {{ form.password2.label }}
+            {{ form.password2 }}
+
+            <input type="submit" value="Create User">
+          </form>
         </p>
       </div>
+      {{ form.errors }}
     </section>
 
   </main><!-- End #main -->

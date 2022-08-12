@@ -26,10 +26,10 @@
               <p><b>Stock:</b> {{ stock.stock_name }}
               <p><b>Description:</b> {{ company.description }}</p>
               <p><b>History:</b> {{ company.history }}</p>
-            {% if user.is_anonymous %}
-            Check RSI <a href="{% url 'my_login' %}">Log in</a>
-            {% else %}
+            {% if user.is_logged %}
             Check RSI <a href="/RSI/{{ company.id }}">here</a>
+            {% else %}
+            Check RSI <a href="{% url 'my_login' %}">Log in</a>
             {% endif %}
         </p>
       </div>
