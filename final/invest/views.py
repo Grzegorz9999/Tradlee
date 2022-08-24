@@ -8,6 +8,7 @@ from django.contrib import messages
 import pandas_datareader as pdr
 from datetime import datetime
 
+
 # Create your views here.
 
 
@@ -97,7 +98,7 @@ class AddIndicatorView(View):
             short_name = form.cleaned_data["short_name"]
             definition = form.cleaned_data["definition"]
             new_indicator = Indicator.objects.create(name=name, short_name=short_name,
-                                                    definition=definition)
+                                                     definition=definition)
             return redirect(f'/indicator/{new_indicator.id}/')
         else:
             return HttpResponse('Formularz jest niepoprawny!', {"form": form})
@@ -160,12 +161,12 @@ class RSIView(View):
             result1 += i.split(" ")
             result2 = "".join(result1[23:31])
         return render(request, "RSI.html", context={
-                       'RSIView': RSIView,
-                       'ticker': ticker,
-                        'result': result,
-                        'company': company,
-                        'result2': result2,
-                  })
+            'RSIView': RSIView,
+            'ticker': ticker,
+            'result': result,
+            'company': company,
+            'result2': result2,
+        })
 
 
 class StrategyView(View):
