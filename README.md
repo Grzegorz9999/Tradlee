@@ -15,7 +15,7 @@ IndexView
 View allows to use subscription form. It loads views of 6 companies on the site. 
 The whole function enables the view of the whole homepage.
 
-![](/home/grzegorz/workspace/Prework/Tradlee/final/invest/static/img/Tradlee/Tradlee1.jpg)
+![main view](https://github.com/Grzegorz9999/Tradlee/blob/main/final/invest/static/img/Tradlee/Tradlee1.jpg?raw=true)
 
 CompanyView
 Function enables the view of a separate company. It shows the name, short name, stock, description and the history
