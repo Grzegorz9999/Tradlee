@@ -21,6 +21,9 @@ CompanyView
 Function enables the view of a separate company. It shows the name, short name, stock, description and the history
 of the company. We can log in and check the RSI indicator.
 
+![company view](https://github.com/Grzegorz9999/Tradlee/blob/main/final/invest/static/img/Tradlee/company_view.jpg?raw=true)
+
+
 CompanyListView
 Function enables the view of all of the companies. There is an option to add any company the user want.
 There are links to the separate view of any company listed on the site.
@@ -56,6 +59,8 @@ Enables user to log out of the platform.
 RSIView
 The function calculates RSI indicator for the companies. It will calculate RSI for any company added 
 as long as the user implements proper TICKER from Yahoo Finance website.
+
+![main view](https://github.com/Grzegorz9999/Tradlee/blob/main/final/invest/static/img/Tradlee/rsi.jpg?raw=true)
 
 StrategyView
 Function enables the view of a separate strategy. It shows the name, indicators used, and the description of the 
